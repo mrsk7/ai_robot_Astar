@@ -15,6 +15,10 @@ public class Robots {
             }
 
         }
+        
+        public static void AStar(Node Robot1,Node Robot2,Node Goal,int[][] obs) {
+        }
+
         /*public static double computePath(int start,BatStruct[] batArray,int spider_idx) {
             double newdistance;
             PriorityQueue<BatStruct> q = new PriorityQueue<BatStruct>();
@@ -107,10 +111,6 @@ public class Robots {
                 if (tmp[j]=='X')
                     obstacles[i][j]=1;
         }
-        for (i=0;i<N;i++) {
-            for (j=0;j<M;j++) 
-                System.out.print(obstacles[i][j]);
-            System.out.println();
-        }
+        AStar(Robot1,Robot2,Goal,obstacles);
     }
 }
