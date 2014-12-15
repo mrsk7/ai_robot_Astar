@@ -1,4 +1,5 @@
-import java.io.*;
+package robots;
+
 import java.lang.*;
 import java.util.*;
 import java.util.PriorityQueue;
@@ -6,84 +7,6 @@ import java.math.*;
 
 public class Robots {
            
-
-        public static class Coords {
-            int x,y;
-            
-            public Coords(int a,int b) {
-                x=a;
-                y=b;
-            }
-
-            //This method overrides Object.equals()
-            public boolean equals(Object obj) {
-                    if(obj instanceof Coords) {
-                            Coords toCompare = (Coords) obj;
-                            return ((x == toCompare.x) && (y == toCompare.y));
-                    }
-                    return false;
-            }
-            //This method overrides Object.hashCode()
-            public int hashCode() {
-                int hash = 1;
-                hash = hash * 31 + x.hashCode();
-                hash = hash * 31 + y.hashCode();
-                return hash;
-            }
-        }
-
-        public static class iState{
-            public Coords robot1_coords,robot2,coords;
-
-            public iState(Node a, Node b) {
-                robot1_coords = new Coords(a.x,a.y);
-                robot2_coords = new Coords(b.x,b.y);
-            }
-
-            //This method overrides Object.equals()
-            public boolean equals(Object obj) {
-                    if(obj instanceof iState) {
-                            iState toCompare = (iState) obj;
-                            return ((robot1_coords.equals(toCompare.robot1_coords))&&(robot2_coords.equals(toCompare.robot2_coords)));
-                    }
-                    return false;
-            }
-
-            //This method overrides Object.hashCode()
-            public int hashCode() {
-                int hash = 1;
-                hash = hash * 31 + robot1_coords.hashCode();
-                hash = hash * 31 + robot2_coords.hashCode();
-                hash = hash * 31 + buf;
-                return hash;
-            }
-            
-            //TODO 
-            public boolean isGoal(String goal) {
-                    if (stack_two.equals(goal)) return true;
-                    else return false;
-            }
-        }
-        public static class Node implements Comparable<Node>{
-            public int x,y;
-            public double g = Double.POSITIVE_INFINITY;
-            public double h;
-            public double f_x;
-
-            public Node(int x_coord, int y_coord) {
-                x = x_coord;
-                y = y_coord;
-            }
-
-            public renew_cost() {
-                f_x = g+h;
-            }
-
-            public int compareTo(Node other) {
-                return Double.compare(f_x,other.f_x);
-            }
-
-        }
         
         public static int heuristic(Node a,Node goal,char choice) {
             double h;
@@ -95,43 +18,10 @@ public class Robots {
                 //Eucleidian heuristic (admissible)
                 h = Math.sqrt(Math.pow(a.x-goal.x,2) + Math.pow(a.y-goal.y,2))
             }
-            else h=0;       //Djikstra
-        }
-
-        public static Node parseNode(BufferedReader reader) {
-            String line = null;
-            try {
-                line = reader.readLine();
+            else if (choice = 'D') {
+                h=0;       //Djikstra
             }
-            catch (IOException ioex) {
-                System.out.println("IOEXception");
-                System.exit(1);
-            }
-            String[] parts = line.split(" ");
-            Node ret = new Node(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]));
-            return ret;
-        }
-        
-
-        public static int[][] parseObstacles(BufferedReader reader,int N,int M) {
-            char[] tmp;
-            int[][] obstacles= new int[N][M];
-            int i,j;
-            String line = null;
-            for (i=0;i<N;i++) {
-                try {
-                    line = reader.readLine();
-                }
-                catch (IOException ioex) {
-                    System.out.println("IOEXception");
-                    System.exit(1);
-                }
-                tmp = line.toCharArray();
-                for (j=0;j<line.length();j++) 
-                    if (tmp[j]=='X')
-                        obstacles[i][j]=1;
-            }
-            return obstacles;
+            else ;
         }
 
         public static LinkedList<Nodes> getNextNodes(Node curr,int[][] obs,N,M) {
