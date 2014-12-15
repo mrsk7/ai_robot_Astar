@@ -23,6 +23,11 @@ public class Node implements Comparable<Node>{
         public void updateCost() {
             f_x = g+h;
         }
+    
+        public boolean isBlocked(int[][] obs) {
+            if (obs[this.cds.x][this.cds.y] == 1) return true;
+            else return false;
+        }
 
         public int compareTo(Node other) {
             return Double.compare(f_x,other.f_x);

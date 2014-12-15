@@ -15,7 +15,7 @@ public class Parser {
                 System.exit(1);
             }
             String[] parts = line.split(" ");
-            Node ret = new Node(new Util.Coords(Integer.parseInt(parts[0]),Integer.parseInt(parts[1])));
+            Node ret = new Node(new Util.Coords(Integer.parseInt(parts[1])-1,Integer.parseInt(parts[0])-1));
             return ret;
         }
         
@@ -38,9 +38,9 @@ public class Parser {
                     if (tmp[j]=='X')
                         obstacles[i][j]=1;
             }
-            obstacles[a.cds.x-1][a.cds.y-1] = -1;
-            obstacles[b.cds.x-1][b.cds.y-1] = -1;
-            obstacles[g.cds.x-1][g.cds.y-1] = 2;
+            obstacles[a.cds.x][a.cds.y] = -1;
+            obstacles[b.cds.x][b.cds.y] = -1;
+            obstacles[g.cds.x][g.cds.y] = 2;
             return obstacles;
         }
 }

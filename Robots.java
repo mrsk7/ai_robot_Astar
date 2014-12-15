@@ -30,23 +30,23 @@ public class Robots {
             //Four possible moves for every position, up, down, right or left
             LinkedList<Node> ll =  new LinkedList<Node>();
             //if not at the top of the map
-            if (!(curr.cds.y == 0))  {
-                Node up = new Node(new Util.Coords(curr.cds.x,curr.cds.y-1),curr.g+1,curr);
+            if (!(curr.cds.x == 0))  {
+                Node up = new Node(new Util.Coords(curr.cds.x-1,curr.cds.y),curr.g+1,curr);
                 ll.add(up);
             }
             //if not at the bottom of the map
-            if (!(curr.cds.y == M-1)) {
-                Node down = new Node(new Util.Coords(curr.cds.x,curr.cds.y+1),curr.g+1,curr);
+            if (!(curr.cds.x == N-1)) {
+                Node down = new Node(new Util.Coords(curr.cds.x+1,curr.cds.y),curr.g+1,curr);
                 ll.add(down);
             }
             //if not at the right edge of the map
-            if (!(curr.cds.x == N-1)) {
-                Node right = new Node(new Util.Coords(curr.cds.x+1 ,curr.cds.y),curr.g+1,curr);
+            if (!(curr.cds.y == M-1)) {
+                Node right = new Node(new Util.Coords(curr.cds.x ,curr.cds.y+1),curr.g+1,curr);
                 ll.add(right);
             }
             //if not at the left edge of the map
             if (!(curr.cds.y == 0)) {
-                Node left = new Node(new Util.Coords(curr.cds.x-1,curr.cds.y),curr.g+1,curr);
+                Node left = new Node(new Util.Coords(curr.cds.x,curr.cds.y-1),curr.g+1,curr);
                 ll.add(left);
             }
             return ll;
@@ -67,6 +67,7 @@ public class Robots {
                 neighbours=getNextNodes(current1,obs,N,M,Goal);
                 for (Iterator<Node> iter = neighbours.iterator(); iter.hasNext();){
                     tmp = iter.next();
+                    if (tmp.isBlocked(obs)) continue;
                     if (closed_set.containsKey(tmp) || (q1.contains(tmp))) continue;
                     tmp.h = heuristic(Robot1,Goal,'M');
                     tmp.updateCost();
@@ -108,7 +109,8 @@ public class Robots {
         Node Goal = Parser.parseNode(reader);
         obstacles = Parser.parseObstacles(reader,N,M,Robot1,Robot2,Goal);
         Node ret = AStar(Robot1,Robot2,Goal,obstacles,N,M);
-        PrettyPrint.printMap(obstacles,N,M);
-        PrettyPrint.printPath(ret);
+        PrettyPrint.preetyPrintPath(ret,obstacles,N,M);
+        //PrettyPrint.printMap(obstacles,N,M);
+        //PrettyPrint.printPath(ret);
     }
 }
