@@ -30,8 +30,8 @@ public class Util {
             public Coords robot1_coords,robot2_coords;
 
             public iState(Node a, Node b) {
-                robot1_coords = new Coords(a.x,a.y);
-                robot2_coords = new Coords(b.x,b.y);
+                robot1_coords = new Coords(a.cds.x,a.cds.y);
+                robot2_coords = new Coords(b.cds.x,b.cds.y);
             }
 
             //This method overrides Object.equals()
