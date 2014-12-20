@@ -1,5 +1,8 @@
 package robots;
 
+import java.util.*;
+import java.math.*;
+
 public class Util {
 
         public static class Coords {
@@ -26,36 +29,91 @@ public class Util {
             }
         }
 
-        public static class iState{
-            public Coords robot1_coords,robot2_coords;
-
-            public iState(Node a, Node b) {
-                robot1_coords = new Coords(a.cds.x,a.cds.y);
-                robot2_coords = new Coords(b.cds.x,b.cds.y);
+        public static double heuristic(Node a,Node goal,char choice) {
+            double h = 0;
+            if (choice == 'M') {
+                //This is Manhattan heuristic (admissible)
+                h = Math.abs(a.cds.x-goal.cds.x) + Math.abs(a.cds.y-goal.cds.y);
             }
-
-            //This method overrides Object.equals()
-            public boolean equals(Object obj) {
-                    if(obj instanceof iState) {
-                            iState toCompare = (iState) obj;
-                            return ((robot1_coords.equals(toCompare.robot1_coords))&&(robot2_coords.equals(toCompare.robot2_coords)));
-                    }
-                    return false;
+            else if (choice == 'E') {
+                //Eucleidian heuristic (admissible)
+                h = Math.sqrt(Math.pow(a.cds.x-goal.cds.x,2) + Math.pow(a.cds.y-goal.cds.y,2));
             }
-
-            //This method overrides Object.hashCode()
-            public int hashCode() {
-                int hash = 1;
-                hash = hash * 31 + robot1_coords.hashCode();
-                hash = hash * 31 + robot2_coords.hashCode();
-                return hash;
+            else if (choice == 'D') {
+                h=0;       //Djikstra
             }
-            
-            //TODO 
-            public boolean isGoal(String goal) {
-                    if (true) return true;
-                    else return false;
-            }
+            else throw new RuntimeException();
+            return h;
         }
 
+        public static LinkedList<Node> getNextNodes(Node curr,int[][] obs,int N,int M,Node Goal) {
+            //Four possible moves for every position, up, down, right or left
+            LinkedList<Node> ll =  new LinkedList<Node>();
+            //if not at the top of the map
+            if (!(curr.cds.x == 0))  {
+                Node up = new Node(new Coords(curr.cds.x-1,curr.cds.y),curr.g+1,curr);
+                ll.add(up);
+            }
+            //if not at the bottom of the map
+            if (!(curr.cds.x == N-1)) {
+                Node down = new Node(new Coords(curr.cds.x+1,curr.cds.y),curr.g+1,curr);
+                ll.add(down);
+            }
+            //if not at the right edge of the map
+            if (!(curr.cds.y == M-1)) {
+                Node right = new Node(new Coords(curr.cds.x ,curr.cds.y+1),curr.g+1,curr);
+                ll.add(right);
+            }
+            //if not at the left edge of the map
+            if (!(curr.cds.y == 0)) {
+                Node left = new Node(new Coords(curr.cds.x,curr.cds.y-1),curr.g+1,curr);
+                ll.add(left);
+            }
+            return ll;
+        }
+
+        public static HashMap<Integer,Coords> getPathByStep(Node bottom) {
+            HashMap<Integer,Coords> hm = new HashMap<Integer,Coords>();
+            Node curr = bottom;
+            Util.Coords tmp;
+            Stack<Coords> stack = new Stack<Coords>();       
+            while (curr!=null) {
+                stack.push(curr.cds);
+                curr = curr.parent;
+            }
+            int i=0;
+            while (!stack.empty()) {
+                tmp = stack.pop();
+                hm.put(i,tmp);
+                i++;
+            }
+            return hm;
+        }
+
+        public static boolean isCollision(HashMap<Integer,Coords> h1,HashMap<Integer,Coords> h2,Node Goal) {
+            int bound = Math.min(h1.size(),h2.size());
+            int i=1;
+            while (i<bound) {
+                if (h1.get(i).equals(h2.get(i))) return true;
+                i++;
+            }
+            return false;
+        }
+
+        public static Coords returnCollisionCoords(HashMap<Integer,Coords> h1,HashMap<Integer,Coords> h2) {
+            int bound = Math.min(h1.size(),h2.size());
+            int i=1;
+            while (i<bound) {
+                if (h1.get(i).equals(h2.get(i))) {
+                    System.out.println("Collision found at ["+h1.get(i).x +","+h1.get(i).y+"]");
+                    return h1.get(i);
+                }
+                i++;
+            }
+            return null;    //Never to get here. Only for error-free compilation
+        }
+
+        public static void updateObstacles(Coords cds,int[][] obs) {
+            obs[cds.x][cds.y] = 1;
+        }
 }
