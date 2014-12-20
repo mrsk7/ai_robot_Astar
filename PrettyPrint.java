@@ -5,12 +5,8 @@ import java.util.*;
 public class PrettyPrint {
 
     public static void printFromHash(HashMap<Integer,Util.Coords> h) {
-        Collection<Util.Coords> ll = h.values();
-        Util.Coords tmp;
-        for (Iterator<Util.Coords> iter = ll.iterator();iter.hasNext();) {
-            tmp = iter.next();
-            System.out.println("["+ (tmp.x+1) +","+ (tmp.y+1) +"]");
-        }
+        int i;
+        for (i=0;i<h.size();i++)  System.out.println("["+ ((h.get(i).x)+1) +","+ (h.get(i).y+1) +"]");
     }
 
     public static void printPath(Node bottom) {
