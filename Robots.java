@@ -20,13 +20,13 @@ public class Robots {
                 if (current1.equals(Goal)) return current1;
                 closed_set.put(current1,current1);
                 neighbours=Util.getNextNodes(current1,obs,N,M,Goal);
-                System.out.println("Current Node " + "[" + current1.cds.x + "," + current1.cds.y + "]");
+                //System.out.println("Current Node " + "[" + current1.cds.x + "," + current1.cds.y + "]");
                 for (Iterator<Node> iter = neighbours.iterator(); iter.hasNext();){
                     tmp = iter.next();
-                    System.out.print("\tChild: " + "[" + tmp.cds.x + "," + tmp.cds.y + "]");
-                    if (tmp.isBlocked(obs)) {System.out.println("\t **Blocked"); continue;}
-                    if (closed_set.containsKey(tmp) || (q1.contains(tmp))) {System.out.println("\t\tAlready found"); continue;}
-                    System.out.println();
+                    //System.out.print("\tChild: " + "[" + tmp.cds.x + "," + tmp.cds.y + "]");
+                    if (tmp.isBlocked(obs)) continue;
+                    if (closed_set.containsKey(tmp) || (q1.contains(tmp))) continue;
+                    //System.out.println();
                     tmp.h = Util.heuristic(tmp,Goal,'M');
                     tmp.updateCost();
                     q1.add(tmp);
@@ -40,9 +40,9 @@ public class Robots {
         HashMap<Integer,Util.Coords> hm2;
         Util.Coords collision;
         ret = AStar(Robot2,Goal,obs,N,M);
-        System.out.println("Simple print path");
-        PrettyPrint.printPath(ret);
-        System.out.println("End-Simple print path");
+        //System.out.println("Simple print path");
+        //PrettyPrint.printPath(ret);
+        //System.out.println("End-Simple print path");
         hm2 = Util.getPathByStep(ret);
         while (Util.isCollision(hm1,hm2,Goal)) {
             System.out.println("Collision Detected");
@@ -51,8 +51,10 @@ public class Robots {
             ret = AStar(Robot2,Goal,obs,N,M);
             hm2 = Util.getPathByStep(ret);
         }
-        //System.out.println("Robot1 will go:");
-        //PrettyPrint.printFromHash(hm1);        
+        if (hm1.size() < hm2.size()) hm2.remove(hm2.size()-1);  //Robot that arrives second at 
+        else hm1.remove(hm1.size()-1);                      //target should stop at neighbour tile
+        System.out.println("Robot1 will go:");
+        PrettyPrint.printFromHash(hm1);        
         System.out.println("Robot2 will go:");
         PrettyPrint.printFromHash(hm2);        
     }

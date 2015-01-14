@@ -42,6 +42,10 @@ public class Util {
             else if (choice == 'D') {
                 h=0;       //Djikstra
             }
+            else if (choice == 'S') {
+                //This is snake heuristic (non-admissible). It's named after the Nokia Snake game
+                h = Math.abs(a.cds.x-goal.cds.x) * Math.abs(a.cds.y-goal.cds.y);
+            }
             else throw new RuntimeException();
             return h;
         }
@@ -105,7 +109,7 @@ public class Util {
             int i=1;
             while (i<bound) {
                 if (h1.get(i).equals(h2.get(i))) {
-                    System.out.println("Collision found at ["+h1.get(i).x +","+h1.get(i).y+"]");
+                    System.out.println("Collision found at ["+(h1.get(i).x+1) +","+ (h1.get(i).y+1) +"]");
                     return h1.get(i);
                 }
                 i++;
